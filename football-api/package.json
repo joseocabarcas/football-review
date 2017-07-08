@@ -4,13 +4,14 @@
   "main": "index.js",
   "scripts": {
     "start": "micro",
-    "test": "echo \"Error not test\" && exit 1",
+    "test": "ava",
     "login": "micro -p 3000 index.js",
-    "register": "micro -p 3001 register.js"
+    "register": "node --inspect node_modules/.bin/micro -p 3001 register.js"
   },
   "license": "MIT",
   "dependencies": {
     "ava": "^0.20.0",
+    "http-hash": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
     "micro": "^7.3.3",
     "mongoose": "^4.11.1",
