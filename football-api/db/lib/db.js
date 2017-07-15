@@ -2,19 +2,20 @@
 
 const mongoose = require('mongoose');
 const User = require('../models/User');
+mongoose.Promise = global.Promise
 
 
 class DB {
 	constructor(options) {
+		this.connected = false
 	}
 
 	connect() {
-		mongoose.connect('mongodb://localhost/football');
-		var db = mongoose.connection;
-		db.on('error', console.error.bind(console, 'connection error:'));
-		db.once('open', function() {
-			console.log('connected success!!')
+		let promise = mongoose.connect('mongodb://localhost/football', {
+			useMongoClient: true
 		});
+		this.connected = true;
+		return promise;
 	}
 
 	getUser(id, callback) {

@@ -4,9 +4,9 @@ const listen = require('test-listen');
 const request = require('request-promise');
 
 const DB = require('../db');
-const db = new DB()
 
-test('get user', async t => {
-	db.connect()
+test('connect db', async t => {
+	const db = new DB()
+	let p = await db.connect()
 	t.deepEqual('hi', 'hi')
 })
