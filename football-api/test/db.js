@@ -4,12 +4,20 @@ const listen = require('test-listen');
 const request = require('request-promise');
 const fixtures = require('../db/fixtures');
 const DB = require('../db');
+const utils = require('../db/lib/utils');
 
 test.beforeEach('connect db', async t => {
 	const db = new DB()
-	let p = await db.connect()
-	t.context.db = p
+	await db.connect()
+	t.context.db = db
 	t.true(db.connected)
+})
+
+test.afterEach.always('cleanup database', async t => {
+  let db = t.context.db
+
+  await db.disconnect()
+  t.false(db.connected, 'should be disconnected')
 })
 
 test('save user', async t => {
@@ -20,11 +28,12 @@ test('save user', async t => {
 	let passPlain = user.password
 	let created = await db.saveUser(user)
 
+	let passMatch = await utils.comparePass(passPlain, created.password)
+
 	t.is(user.username, created.username)
 	t.is(user.email, created.email)
 	t.is(user.name, created.name)
-	t.is(utils.encrypt(plainPassword), created.password)
-	t.is(typeof user.id, 'string')
-	t.truthy(created.createdAt)
-	t.true(true)
+	t.true(passMatch)
+	t.is(typeof created._id, 'object')
+	t.truthy(created.created_at)
 })
