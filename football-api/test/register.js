@@ -3,7 +3,6 @@ const test = require('ava');
 const listen = require('test-listen');
 const request = require('request-promise');
 
-
-test('/register', async t => {
-	t.deepEqual('hi', 'hi')
+test('register user', async t => {
+	t.true(true)
 })
