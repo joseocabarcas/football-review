@@ -3,9 +3,29 @@ const HttpHash = require('http-hash');
 
 const hash = HttpHash();
 
+const fetch = require('node-fetch');
+//const fetch = require('isomorphic-fetch');
+
+require('dotenv').config();
+//require('es6-promise').polyfill();
+
 hash.set('GET /competitions', async (req, res, params) => {
 	console.log(req);
-	const data = {}
+	let data = {};
+
+	try {
+		data = await fetch('http://api.football-data.org/v1/competitions/', {
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Auth-Token': process.env.TOKEN
+			}
+		});
+		console.log(JSON.stringify(data))
+		data = await data.json();
+	} catch(e) {
+		throw e;
+	}
+
 	send(res, 200, data);
 })
 

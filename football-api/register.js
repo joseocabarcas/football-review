@@ -5,6 +5,7 @@ const DB = require('./db');
 const hash = HttpHash()
 const db = new DB()
 
+
 hash.set('POST /register', async function register (req, res, params) {
 	const data = {'data': 'message'}
 	const statusCode = 200
